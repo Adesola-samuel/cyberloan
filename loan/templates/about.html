@@ -1,0 +1,40 @@
+{% extends 'loan/base.html' %}
+{% load static from staticfiles %}
+
+{% block content %}
+<title>Scli | About us</title>
+
+
+    <div class="row">
+        <h1 class="text-center">About Us</h1>
+        <p style="margin:10px;padding:10px;" class="text-center text-info bg-info" id="p"><strong>Smart Cyber-loan Intelligence</strong> is a final year project of computer science
+            students of <strong>The Federal Polytechinc Ado - Ekiti, Ekiti State.</strong> It is a case study of <strong>The First Bank Plc.</strong> Superviced by <strong>Dr. Ogunlola S.O.</strong>
+        </p>
+        <p class="lead text-center text-primary">Contributors to this application</p>
+        {% for contributor in contributors %}
+
+            <div class="col-lg-4 col-sm-4 mb-4 hover-animate">
+                <div class="card shadow border-0 h-100">
+                    <div class="card-head">
+                       <img style="height:100px" src="/{{contributor.picture.url}}" alt="Profile Picture" class="img-rounded img-fluid card-img-top img-responsive">
+                    </div>
+
+                    <div class="card-body">
+                        <a href="#" class="text-uppercase text-muted text-sm letter-spacing-2">{{contributor.name}}</a>
+                        <h5 class="my-2">
+                            <p class="text-danger">{{contributor.office}} </p>
+                        </h5>
+                        <p class="text-gray-500 text-sm my-3"><i class="far fa-clock mr-2"></i>{{contributor.updated}}</p>
+                        <p class="my-2 text-muted text-sm text-primary">{{contributor.about}}</p><a
+                                href="" class="btn btn-link pl-0">
+                            <i class="fab fa-whatsapp x text-success"></i> <span class="text-success">+123{{contributor.phn}}</span> </a>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+</div>
+
+
+{% endblock content %}

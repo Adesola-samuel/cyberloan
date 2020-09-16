@@ -1,0 +1,59 @@
+{% extends 'loan/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<title>Scli | Predictor</title>
+
+<form method="POST" action="" autocomplete="off">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-md-6">
+            {{ form.name|as_crispy_field }}
+        </div>
+        <div class="col-md-3">
+            {{ form.gender|as_crispy_field }}
+        </div>
+        <div class="col-md-3">
+            {{ form.loan_amount_term|as_crispy_field }}
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            {{ form.education|as_crispy_field }}
+        </div>
+        <div class="col-md-2">
+            {{ form.married|as_crispy_field }}
+        </div>
+        <div class="col-md-2">
+            {{ form.self_employed|as_crispy_field }}
+        </div>
+        <div class="col-md-2">
+            {{ form.dependents|as_crispy_field }}
+        </div>
+        <div class="col-md-2">
+            {{ form.property_area|as_crispy_field }}
+        </div>
+        <div class="col-md-2">
+            {{ form.credit_history|as_crispy_field }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            {{ form.applicant_income|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.coapplicant_income|as_crispy_field }}
+        </div>
+        <div class="col-md-4">
+            {{ form.loan_amount|as_crispy_field }}
+        </div>
+    </div><center>
+{% if positive_status %}<div class="row"><p class="lead primary text-success"><span class="glyphicon glyphicon-thumbs-up"></span> {{positive_status}}</p></div>{% endif %}
+{% if probation_status %}<div class="row"><p class="lead primary text-default" style="text-align:center;"><span class="glyphicon glyphicon-hand-right"></span> Welldone! {{name}}, your loan will be approved, you can borrow upto &#8358;{{probation_status}}</p></div>{% endif %}
+{% if consolidation_msg %}<div class="row"><p class="lead primary text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{consolidation_msg}}</p></div>{% endif %}
+{% if error_display %} <div class="row"><p class="lead primary text-danger"><span class="glyphicon glyphicon-ban-circle"></span> {{error_display}}</p></div>{% endif %}
+    <input type="submit" value="Submit" class="btn btn-primary btn-block"></center>
+    <center> <b><a href="{% url 'loan:prediction' %}">Reload Form</a></b> </center>
+</form>
+{% endblock content %}

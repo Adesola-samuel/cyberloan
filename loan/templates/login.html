@@ -1,0 +1,30 @@
+{% extends 'loan/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<title>Scli | Login</title>
+
+<div class="row">
+    <div class="col col-md-4 col-md-offset-4" style="box-shadow:0 0 5px deepskyblue;padding:10px;">
+        <form method="POST" action="" autocomplete="off">
+            {% csrf_token %}
+
+                    {{form.username|as_crispy_field}}
+
+                    {{form.password|as_crispy_field}}
+            {% for message in messages %}
+            <p class="text-danger text-center">
+               <b> {{message}} ! </b>
+            </p>
+            {% endfor %}
+
+            <input type="submit" value="Login" class="btn btn-info btn-block"></center>
+            <center><b><a href="{% url 'loan:create_user' %}#frm-crt">Sign up</a></b></center>
+            <center><b><a href="{% url 'loan:login' %}">Reload Form</a></b></center>
+        </form>
+
+
+    </div>
+</div>
+
+{% endblock content %}
