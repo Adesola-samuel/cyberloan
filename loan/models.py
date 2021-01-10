@@ -9,6 +9,7 @@ class Contributor(models.Model):
     picture = models.ImageField(upload_to='static/pictures', blank=True)
     created = models.DateTimeField(auto_now_add=True, blank=True)
     updated = models.DateTimeField(auto_now=True, blank=True)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 
@@ -35,7 +36,7 @@ class Prediction(models.Model):
     loan_amount_term = models.IntegerField()
     credit_history = models.IntegerField()
     property_area = models.IntegerField()
-    loan_amount = models.IntegerField()
+    loan_amount = models.FloatField()
     loan_status = models.CharField(max_length=12, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):

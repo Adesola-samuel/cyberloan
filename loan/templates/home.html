@@ -1,24 +1,28 @@
 {% extends 'loan/base.html' %}
-{% load static from staticfiles %}
+{% load static %}
+
+{% block pagehead %}
+Home
+{% endblock pagehead %}
 
 {% block content %}
 
 <title>Scli | Home</title>
 
   <div class="row text-center" style="padding:5px;">
-    <div class="col col-md-2 col-md-offset-5 bg-white text-primary" style="box-shadow:0 0 5px deepskyblue;border-radius:20px;padding:10px;margin-top:20px;margin-bottom:20px;">
-       <p class="lead text-primary " style="color:white;font-size:30px;text-shadow: 0 0 5px deepskyblue;"><b>HOME</b></p>
+    <div class="col col-md-2 offset-md-5 bg-white text-dark" style="box-shadow:0 0 5px black;border-radius:20px;padding:10px;margin-top:20px;margin-bottom:20px;">
+       <p class="lead text-light " style="color:white;font-size:30px;text-shadow: 0 0 5px black;"><b>HOME</b></p>
 
         {% if user.is_superuser %}
           <p>
-            <a href="admin" class="btn btn-info"><span
+            <a href="admin" class="btn btn-dark"><span
                         class="glyphicon glyphicon-info-sign"></span> Admin</a>
           </p>
       {% endif %}
-      <a href="{% url 'loan:prediction' %}" class="btn btn-info btn-md " style="margin-bottom:20px;"> Get Started </a>
+      <a href="{% url 'loan:prediction' %}" class="btn btn-dark btn-md " style="margin-bottom:20px;"> Get Started </a>
     </div>
   </div>
-<div class="row text-center"><p class="text-primary"><b>Smart Cyber-Loan helps you borrow with a reliable level of financial security.</b></p></div>
+<p class="text-dark text-center"><b>Smart Cyber-Loan helps you borrow with a reliable level of financial security.</b></p>
 
 
 

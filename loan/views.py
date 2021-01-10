@@ -1,14 +1,23 @@
-import joblib
+import cv2
+from pyzbar import pyzbar
 import pandas as pd
 from django.shortcuts import render, redirect
 from django.db.models import Q
 from .forms import PredictionForm, CreateUserForm, UserLoginForm
 from .models import Prediction, Help, Contributor
+from django.contrib.auth.models import User
 from sklearn.externals import joblib
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from  django.conf import settings
+from django.contrib.auth import authenticate, login, logout, load_backend
 from django.contrib.auth.decorators import login_required
+import pyttsx3
+
+def audioread(statement):
+    speaker = pyttsx3.init()
+    speaker.say(statement)
+    speaker.runAndWait()
 
 lassoRegressor = joblib.load('./model/LassoRegressor.pkl')
 logisticClassifier = joblib.load('./model/LogisticClassifier.pkl')
@@ -49,6 +58,8 @@ def prediction(request):
             temp['name'] = request.POST.get('name')
 
             if status == 0.0:
+                statement='Congratulations!',temp['name'], '. You applied for a loan of', temp['LoanAmount'], 'naira only. Your loan will be approved. Thanks for trusting Smart Cyber-Loan.'
+                audioread(statement)
                 context['positive_status'] = 'Congrats!, your loan will be approved.'
                 loan_status = 'Loan Approved'
                 temp['Loan_Status'] = 'Approved'
@@ -60,12 +71,17 @@ def prediction(request):
                     if recommendedAmount > int(temp['LoanAmount']):
                         context['recommendedAmount'] = recommendedAmount
                         temp['Loan_Status'] = 'Approved'
+                        statement='Congratulations!', temp['name'], '. You applied for a loan of', temp['LoanAmount'],'naira only. Your loan will be approved. Actually, you can borrow as much as ',recommendedAmount,' naira only. Thanks for trusting Smart Cyber-Loan.'
+                        audioread(statement)
                         context['probation_status'] = recommendedAmount
                     else:
-                        context['consolidation_msg'] = 'Sorry! your loan may not be approved, your credit limit may be too low! your loan may be approved if you reduce your loan amount.'
+                        statement='Sorry!',temp['name'], '. You applied for a loan of ', temp['LoanAmount'], 'naira only.', 'Your loan may not be approved, your credit limit may be too low! your loan may be approved if you reduce your loan amount.'
+                        audioread(statement)
+                        context['consolidation_msg'] = 'Sorry! your loan may not be approved, reduce your loan amount and try again.'
                         temp['Loan_Status'] = 'Not Approved'
                 else:
-                    context['consolidation_msg'] = 'Sorry! your loan may not be approved, you may not be eligible for this loan!'
+                    audioread('Sorry!, you are not be eligible for this loan!')
+                    context['consolidation_msg'] = 'Sorry! are not eligible for this loan!'
                     temp['Loan_Status'] = 'Not Approved'
             context['form'] = form
             q = Prediction(
@@ -89,7 +105,7 @@ def prediction(request):
 
         else:
             context['form'] = form
-            context['error_display'] = 'You enterd invalid input, please fill the form properly!'
+            context['error_display'] = 'You entered invalid input, please fill the form properly!'
         return render(request, "prediction.html", context)
     else:
         context['form'] = PredictionForm()
@@ -158,6 +174,7 @@ def create_user(request):
         return render(request, "create_user.html", context)
 
 def login_page(request):
+    audioread('Welcome to smart cyber-loan, enter your username and password to login')
     if request.user.is_authenticated:
         return redirect('loan:home')
     else:
@@ -182,3 +199,50 @@ def login_page(request):
 def logout_user(request):
     logout(request,)
     return redirect('loan:login')
+
+def qr_auth(request):
+    statement = 'Please kindly navigate windows to camera about to open, present the back view of your I.D. card before camera. As soon as your card is detected, please press the Q button.'
+    audioread(statement)
+    cap = cv2.VideoCapture(0)
+    font = cv2.FONT_HERSHEY_PLAIN
+
+    while True:
+        _, frame = cap.read()
+        decodedObjects = pyzbar.decode(frame)
+        for obj in decodedObjects:
+            App_id = obj.data
+            cv2.putText(frame, str("QR DETECTED!"), (50, 50), font, 3,
+                        (255, 0, 0), 3)
+        cv2.imshow("Frame", frame)
+        key = cv2.waitKey(1)
+        if key & 0xFF == ord('q'):
+            break
+    cap.release()
+    cv2.destroyAllWindows()
+
+    try:
+        app_id = str(App_id);
+        app_id = app_id[2];
+        pk = int(app_id);
+    except UnboundLocalError:
+        return redirect('loan:login')
+
+    check = User.objects.filter(id=pk)
+    context = {}
+    context['auth_page'] = 'auth page'
+    if check.count() == 0:
+        context['App_fail'] = "User does not exist!"
+        return redirect('loan:login')
+    else:
+        user = User.objects.get(pk=pk)
+        if not hasattr(user, 'backend'):
+            for backend in settings.AUTHENTICATION_BACKENDS:
+                if user == load_backend(backend).get_user(user.pk):
+                    user.backend = backend
+                    break
+        if hasattr(user, 'backend'):
+            login(request, user)
+            statement = 'Welldone!',user.username,'. You have successfully logged in.'
+            audioread(statement)
+    return redirect('loan:login')
+

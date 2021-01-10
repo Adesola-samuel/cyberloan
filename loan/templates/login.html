@@ -1,11 +1,20 @@
 {% extends 'loan/base.html' %}
 {% load crispy_forms_tags %}
 
+{% block pagehead %}
+User Login
+{% endblock pagehead %}
+
+{% block links %}
+<li><a href="{% url 'loan:home' %}">Home</a></li>
+            <li>User Login</li>
+{% endblock links %}
+
 {% block content %}
 <title>Scli | Login</title>
 
 <div class="row">
-    <div class="col col-md-4 col-md-offset-4" style="box-shadow:0 0 5px deepskyblue;padding:10px;">
+    <div class="col col-md-4 offset-md-4" style="box-shadow:0 0 5px black;padding:10px;margin-bottom:20px;">
         <form method="POST" action="" autocomplete="off">
             {% csrf_token %}
 
@@ -18,9 +27,10 @@
             </p>
             {% endfor %}
 
-            <input type="submit" value="Login" class="btn btn-info btn-block"></center>
-            <center><b><a href="{% url 'loan:create_user' %}#frm-crt">Sign up</a></b></center>
-            <center><b><a href="{% url 'loan:login' %}">Reload Form</a></b></center>
+            <input type="submit" value="Login" class="btn btn-dark btn-block"></center>
+            <center><b><a href="{% url 'loan:create_user' %}#frm-crt" class="text-dark">Sign up</a></b></center>
+            <center><b><a href="{% url 'loan:login' %}" class="text-dark">Reload Form</a></b></center>
+            <center><b><a href="{% url 'loan:qr' %}" class="text-dark">Use Card</a></b></center>
         </form>
 
 

@@ -1,6 +1,15 @@
 {% extends 'loan/base.html' %}
 {% load crispy_forms_tags %}
 
+{% block pagehead %}
+Loan
+{% endblock pagehead %}
+
+{% block links %}
+    <li><a href="{% url 'loan:home' %}">Home</a></li>
+            <li>Predict Loan</li>
+{% endblock links %}
+
 {% block content %}
 <title>Scli | Predictor</title>
 
@@ -49,11 +58,11 @@
             {{ form.loan_amount|as_crispy_field }}
         </div>
     </div><center>
-{% if positive_status %}<div class="row"><p class="lead primary text-success"><span class="glyphicon glyphicon-thumbs-up"></span> {{positive_status}}</p></div>{% endif %}
-{% if probation_status %}<div class="row"><p class="lead primary text-default" style="text-align:center;"><span class="glyphicon glyphicon-hand-right"></span> Welldone! {{name}}, your loan will be approved, you can borrow upto &#8358;{{probation_status}}</p></div>{% endif %}
-{% if consolidation_msg %}<div class="row"><p class="lead primary text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{consolidation_msg}}</p></div>{% endif %}
-{% if error_display %} <div class="row"><p class="lead primary text-danger"><span class="glyphicon glyphicon-ban-circle"></span> {{error_display}}</p></div>{% endif %}
-    <input type="submit" value="Submit" class="btn btn-primary btn-block"></center>
-    <center> <b><a href="{% url 'loan:prediction' %}">Reload Form</a></b> </center>
+{% if positive_status %}<div class="row"><p class="lead dark text-dark"><span class="glyphicon glyphicon-thumbs-up"></span> {{positive_status}}</p></div>{% endif %}
+{% if probation_status %}<div class="row"><p class="lead dark text-default" style="text-align:center;"><span class="glyphicon glyphicon-hand-right"></span> Welldone! {{name}}, your loan will be approved, you can borrow upto &#8358;{{probation_status}}</p></div>{% endif %}
+{% if consolidation_msg %}<div class="row"><p class="lead dark text-danger"><span class="glyphicon glyphicon-exclamation-sign"></span> {{consolidation_msg}}</p></div>{% endif %}
+{% if error_display %} <div class="row"><p class="lead dark text-danger"><span class="glyphicon glyphicon-ban-circle"></span> {{error_display}}</p></div>{% endif %}
+    <input type="submit" value="Submit" class="btn btn-dark btn-block"></center>
+    <center> <b><a href="{% url 'loan:prediction' %}" class="text-dark">Reload Form</a></b> </center>
 </form>
 {% endblock content %}

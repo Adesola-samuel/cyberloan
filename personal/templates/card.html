@@ -1,0 +1,47 @@
+{% load static %}
+{% load qr_code %}
+<link href="{% static 'regna/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'fontawesome/css/fontawesome.css' %}">
+<link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+
+<style>
+    body{background:grey;}
+</style>
+
+<div class="row">
+    <div class="col col-md-4 offset-sm-4 bg-light" style="box-shadow:0 0 10px black;padding:10px;margin-top:20px;">
+
+            <table class="table">
+                <tr>
+                    <th>Smart Cyber-Loan</th>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>
+                        <img src="/{{request.user.biodata.profile_pic.url}}" alt="" style="width:70px;height:70px;border-radius:70px;"><br>
+                        <small>{{request.user.biodata.profile}} <br> {{request.user.biodata.business}}</small>
+                    </td>
+                    <td>
+                        <div>{% qr_from_text request.user.id size='s' border=2 %}</div>
+                    </td>
+                </tr>
+            </table>
+    </div>
+
+    <div class="col col-md-4 offset-sm-4 bg-light" style="padding:10px;margin-top:20px;" id="print_not">
+        <button class="btn-dark" id="print">Print</button>
+        <a href="{% url 'loan:home' %}" style="float:right" class="btn btn-dark">Exit</a>
+    </div>
+
+</div>
+<script src="{% static 'personal/assets/vendor/jquery/jquery.min.js' %}"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#print").click(function(){
+            document.getElementById("print_not").style.visibility='hidden';
+            window.print();
+            document.getElementById("print_not").style.visibility='visible';
+        });
+    });
+</script>

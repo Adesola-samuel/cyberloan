@@ -1,5 +1,14 @@
 {% extends 'loan/base.html' %}
 
+{% block pagehead %}
+Successful Predictions
+{% endblock pagehead %}
+
+{% block links %}
+    <li><a href="{% url 'loan:home' %}">Home</a></li>
+            <li>Successful Predictions</li>
+{% endblock links %}
+
 {% block content %}
 <title>  Scli | Successful Predictions</title>
 

@@ -1,6 +1,15 @@
 {% extends 'loan/base.html' %}
 {% load crispy_forms_tags %}
 
+{% block pagehead %}
+Search Result
+{% endblock pagehead %}
+
+{% block links %}
+<li><a href="{% url 'loan:home' %}">Home</a></li> <li><a href="{% url 'loan:help' %}">Help</a></li><li>Search results</li>
+            <li>{{result.task|slice:":10"}}...</li>
+{% endblock links %}
+
 {% block content %}
 <title>Scli | Help</title>
 
@@ -9,17 +18,17 @@
 
 <div id="#top">
 
-    <div style="background:#f1f1f1;box-shadow:0 0 5px black;padding:10px;">
+    <div style="background:#f1f1f1;box-shadow:0 0 5px black;padding:30px;margin-bottom:20px;">
         {% if result.video %}
             <video controls preload="metadata" class="img-rounded" >
                 <source src="/{{result.video.url}}" type="video/{{result.video_type}}">
             </video>
         {% endif %}
 
-        <h1 >{{result.task}}</h1>
-        <p class="text-primary" style="padding:10px;">{{result.howto}}</p>
+        <h1 class="text-primary">{{result.task}}</h1>
+            <p class="text-dark">{{result.howto}}</p>
          <center ><i class="text-success"><a href="#top"> Goto Top </a></i>  </center>
- </div>
+    </div>
 </div>
 
 

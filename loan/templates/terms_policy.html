@@ -1,5 +1,16 @@
 {% extends 'loan/base.html' %}
-{% load static from staticfiles %}
+{% load static %}
+
+
+{% block pagehead %}
+T & C
+{% endblock pagehead %}
+
+{% block links %}
+    <li><a href="{% url 'loan:home' %}">Home</a></li>
+            <li>T&C</li>
+{% endblock links %}
+
 
 {% block content %}
 <title>Scli | Terms & Policies</title>
